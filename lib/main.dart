@@ -40,7 +40,7 @@ void main() async {
     // 4. App Attest provider with fallback to Device Check provider (App Attest provider is only available on iOS 14.0+, macOS 14.0+)
     appleProvider: AppleProvider.appAttest,
   );
-  await dotenv.load(fileName: "../.env");
+  await dotenv.load(fileName: "/.env");
   runApp(const MyApp());
 }
 
