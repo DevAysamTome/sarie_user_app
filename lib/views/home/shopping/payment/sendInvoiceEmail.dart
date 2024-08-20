@@ -1,64 +1,84 @@
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:user_app/models/invoice.dart';
 
 Future<void> sendInvoiceByEmail(Invoice invoice) async {
-  final String apiKey = dotenv.env['SENDGRID_API_KEY']!;
+  final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
 
-  final String sendGridUrl = 'https://api.sendgrid.com/v3/mail/send';
+  try {
+    // إعدادات Remote Config وجلب المفتاح
+    await _remoteConfig.setConfigSettings(
+      RemoteConfigSettings(
+        fetchTimeout: const Duration(seconds: 10),
+        minimumFetchInterval: const Duration(hours: 1),
+      ),
+    );
+    await _remoteConfig.fetchAndActivate();
 
-  final emailContent = '''
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9;">
-        <h1 style="text-align: center; color: #d9534f;">تفاصيل الفاتورة</h1>
-        <p><strong>رقم الفاتورة:</strong> ${invoice.invoiceId}</p>
-        <p><strong>رقم الطلب:</strong> ${invoice.orderId}</p>
-        <p><strong>المبلغ الكلي:</strong> <span style="color: #5cb85c; font-size: 1.2em;">${invoice.totalPrice}</span></p>
-        <p><strong>تكلفة التوصيل:</strong> ${invoice.deliveryCost}</p>
-        <p><strong>وقت الطلب:</strong> ${invoice.timestamp}</p>
-        <hr style="border: 1px solid #d9534f;">
-        <h2 style="color: #d9534f;">العناصر:</h2>
-        <ul style="list-style-type: none; padding: 0;">
-            ${invoice.items.map((item) => '''
-                <li style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
-                    <strong>${item.meal.name}</strong> x ${item.quantity}
-                </li>''').join()}
-        </ul>
-        <hr style="border: 1px solid #d9534f;">
-        <p style="text-align: center; font-size: 0.9em; color: #888;">شكراً لطلبك! نتمنى لك يوماً سعيداً.</p>
-    </div>
-''';
+    String apiKey = _remoteConfig.getString('sendgrid_api_key');
 
-  final emailData = {
-    'personalizations': [
-      {
-        'to': [
-          {'email': invoice.userEmail}
-        ],
-        'subject': 'فاتورتك من تطبيق سريع',
-      }
-    ],
-    'from': {'email': 'sariecompany@gmail.com'},
-    'content': [
-      {
-        'type': 'text/html',
-        'value': emailContent,
-      }
-    ]
-  };
+    if (apiKey.isEmpty) {
+      print('API Key not found!');
+      return;
+    }
 
-  final response = await http.post(
-    Uri.parse(sendGridUrl),
-    headers: {
-      'Authorization': 'Bearer $apiKey',
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode(emailData),
-  );
+    final String sendGridUrl = 'https://api.sendgrid.com/v3/mail/send';
 
-  if (response.statusCode == 202) {
-    print('Invoice sent successfully to ${invoice.userEmail}');
-  } else {
-    print('Failed to send invoice. Status code: ${response.statusCode}');
+    final emailContent = '''
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9;">
+          <h1 style="text-align: center; color: #d9534f;">تفاصيل الفاتورة</h1>
+          <p><strong>رقم الفاتورة:</strong> ${invoice.invoiceId}</p>
+          <p><strong>رقم الطلب:</strong> ${invoice.orderId}</p>
+          <p><strong>المبلغ الكلي:</strong> <span style="color: #5cb85c; font-size: 1.2em;">${invoice.totalPrice}</span></p>
+          <p><strong>تكلفة التوصيل:</strong> ${invoice.deliveryCost}</p>
+          <p><strong>وقت الطلب:</strong> ${invoice.timestamp}</p>
+          <hr style="border: 1px solid #d9534f;">
+          <h2 style="color: #d9534f;">العناصر:</h2>
+          <ul style="list-style-type: none; padding: 0;">
+              ${invoice.items.map((item) => '''
+                  <li style="padding: 10px 0; border-bottom: 1px solid #e0e0e0;">
+                      <strong>${item.meal.name}</strong> x ${item.quantity}
+                  </li>''').join()}
+          </ul>
+          <hr style="border: 1px solid #d9534f;">
+          <p style="text-align: center; font-size: 0.9em; color: #888;">شكراً لطلبك! نتمنى لك يوماً سعيداً.</p>
+      </div>
+    ''';
+
+    final emailData = {
+      'personalizations': [
+        {
+          'to': [
+            {'email': invoice.userEmail}
+          ],
+          'subject': 'فاتورتك من تطبيق سريع',
+        }
+      ],
+      'from': {'email': 'sariecompany@gmail.com'},
+      'content': [
+        {
+          'type': 'text/html',
+          'value': emailContent,
+        }
+      ]
+    };
+
+    final response = await http.post(
+      Uri.parse(sendGridUrl),
+      headers: {
+        'Authorization': 'Bearer $apiKey',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(emailData),
+    );
+
+    if (response.statusCode == 202) {
+      print('Invoice sent successfully to ${invoice.userEmail}');
+    } else {
+      print('Failed to send invoice. Status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Failed to fetch remote config or send invoice: $e');
   }
 }

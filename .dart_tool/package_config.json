@@ -224,6 +224,24 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "firebase_remote_config",
+      "rootUri": "file:///C:/Users/aysam/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_remote_config-5.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "firebase_remote_config_platform_interface",
+      "rootUri": "file:///C:/Users/aysam/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_remote_config_platform_interface-1.4.40",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "firebase_remote_config_web",
+      "rootUri": "file:///C:/Users/aysam/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_remote_config_web-1.6.12",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
       "name": "firebase_storage",
       "rootUri": "file:///C:/Users/aysam/AppData/Local/Pub/Cache/hosted/pub.dev/firebase_storage-12.1.1",
       "packageUri": "lib/",
@@ -914,7 +932,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-08-20T21:50:29.390307Z",
+  "generated": "2024-08-20T23:30:29.274986Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///C:/Users/aysam/flutter",

@@ -11,6 +11,7 @@ import 'package:cloud_functions_web/cloud_functions_web.dart';
 import 'package:firebase_app_check_web/firebase_app_check_web.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:firebase_core_web/firebase_core_web.dart';
+import 'package:firebase_remote_config_web/firebase_remote_config_web.dart';
 import 'package:firebase_storage_web/firebase_storage_web.dart';
 import 'package:geolocator_web/geolocator_web.dart';
 import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
@@ -27,6 +28,7 @@ void registerPlugins([final Registrar? pluginRegistrar]) {
   FirebaseAppCheckWeb.registerWith(registrar);
   FirebaseAuthWeb.registerWith(registrar);
   FirebaseCoreWeb.registerWith(registrar);
+  FirebaseRemoteConfigWeb.registerWith(registrar);
   FirebaseStorageWeb.registerWith(registrar);
   GeolocatorPlugin.registerWith(registrar);
   GoogleMapsPlugin.registerWith(registrar);
