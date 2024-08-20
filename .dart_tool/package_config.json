@@ -254,6 +254,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "flutter_dotenv",
+      "rootUri": "file:///C:/Users/aysam/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_dotenv-5.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_launcher_icons",
       "rootUri": "file:///C:/Users/aysam/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_launcher_icons-0.13.1",
       "packageUri": "lib/",
@@ -908,7 +914,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-08-20T21:38:32.985431Z",
+  "generated": "2024-08-20T21:50:29.390307Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///C:/Users/aysam/flutter",

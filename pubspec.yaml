@@ -60,6 +60,7 @@ dependencies:
   cloud_functions: ^5.0.4
   recaptcha_enterprise_flutter: ^18.5.1
   firebase_app_check: ^0.3.0+4
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:

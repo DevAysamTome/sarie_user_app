@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:user_app/models/invoice.dart';
 
 Future<void> sendInvoiceByEmail(Invoice invoice) async {
-  final String apiKey =
-      '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';
+  final String apiKey = dotenv.env['SENDGRID_API_KEY']!;
+
   final String sendGridUrl = 'https://api.sendgrid.com/v3/mail/send';
 
   final emailContent = '''

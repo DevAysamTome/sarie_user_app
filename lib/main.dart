@@ -1,6 +1,7 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:user_app/models/cardProvider.dart';
 import 'package:user_app/models/cartProvider.dart';
@@ -39,7 +40,7 @@ void main() async {
     // 4. App Attest provider with fallback to Device Check provider (App Attest provider is only available on iOS 14.0+, macOS 14.0+)
     appleProvider: AppleProvider.appAttest,
   );
-
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
